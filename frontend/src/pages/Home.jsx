@@ -29,68 +29,68 @@ const Home = () => {
   const getDemoProperties = () => [
     {
       _id: '1',
-      title: 'Modern Downtown Apartment',
-      price: 450000,
-      location: 'Manhattan, New York',
+      title: 'Modern Apartment in South Delhi',
+      price: 8500000, // ₹85 Lakhs
+      location: 'South Delhi, Delhi',
       images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800'],
-      bedrooms: 2,
+      bedrooms: 3,
       bathrooms: 2,
-      area: 1200,
+      area: 1500,
       type: 'For Sale',
     },
     {
       _id: '2',
-      title: 'Luxury Beachfront Villa',
-      price: 1250000,
-      location: 'Miami Beach, Florida',
+      title: 'Luxury Villa in Mumbai Suburbs',
+      price: 35000000, // ₹3.5 Cr
+      location: 'Bandra West, Mumbai',
       images: ['https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800'],
-      bedrooms: 4,
-      bathrooms: 3,
-      area: 3500,
+      bedrooms: 5,
+      bathrooms: 4,
+      area: 4500,
       type: 'For Sale',
     },
     {
       _id: '3',
-      title: 'Cozy Suburban House',
-      price: 325000,
-      location: 'Austin, Texas',
+      title: 'Cozy 2BHK in Bangalore',
+      price: 6500000, // ₹65 Lakhs
+      location: 'Whitefield, Bangalore',
       images: ['https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800'],
-      bedrooms: 3,
+      bedrooms: 2,
       bathrooms: 2,
-      area: 2000,
+      area: 1100,
       type: 'For Sale',
     },
     {
       _id: '4',
-      title: 'Penthouse with City View',
-      price: 890000,
-      location: 'Chicago, Illinois',
+      title: 'Penthouse with City View in Pune',
+      price: 12000000, // ₹1.2 Cr
+      location: 'Koregaon Park, Pune',
       images: ['https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800'],
       bedrooms: 3,
-      bathrooms: 2,
-      area: 2200,
+      bathrooms: 3,
+      area: 2000,
       type: 'For Sale',
     },
     {
       _id: '5',
-      title: 'Charming Country Estate',
-      price: 675000,
-      location: 'Nashville, Tennessee',
+      title: 'Elegant Villa in Jaipur',
+      price: 9500000, // ₹95 Lakhs
+      location: 'C-Scheme, Jaipur',
       images: ['https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800'],
       bedrooms: 4,
       bathrooms: 3,
-      area: 2800,
+      area: 3000,
       type: 'For Sale',
     },
     {
       _id: '6',
-      title: 'Contemporary Loft',
-      price: 520000,
-      location: 'Seattle, Washington',
+      title: 'Contemporary 2BHK in Hyderabad',
+      price: 7200000, // ₹72 Lakhs
+      location: 'Gachibowli, Hyderabad',
       images: ['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800'],
       bedrooms: 2,
       bathrooms: 2,
-      area: 1500,
+      area: 1200,
       type: 'For Sale',
     },
   ];
@@ -103,7 +103,7 @@ const Home = () => {
         </svg>
       ),
       title: 'Verified Properties',
-      description: 'All listings are thoroughly verified for authenticity and accuracy',
+      description: 'All listings are thoroughly verified for authenticity and legal approvals',
     },
     {
       icon: (
@@ -121,7 +121,7 @@ const Home = () => {
         </svg>
       ),
       title: '24/7 Support',
-      description: 'Round-the-clock customer support for all your queries',
+      description: 'Round-the-clock customer support for all your property queries',
     },
   ];
 
@@ -148,11 +148,11 @@ const Home = () => {
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
               Trusted Property Solutions
               <br />
-              <span className="text-primary-300">for Modern Living</span>
+              <span className="text-primary-300">Across India</span>
             </h1>
             <p className="text-xl md:text-2xl text-white/80 mb-10 max-w-3xl mx-auto">
-              Discover your dream property from thousands of verified listings. 
-              Professional service, transparent pricing, and expert guidance every step of the way.
+              Discover your dream home from thousands of verified listings. 
+              Professional service, transparent pricing, and expert guidance in every major Indian city.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
@@ -167,21 +167,6 @@ const Home = () => {
               >
                 Contact Us
               </Link>
-            </div>
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 0.5 }}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2"
-          >
-            <div className="flex flex-col items-center text-white/60">
-              <span className="text-sm mb-2">Scroll to explore</span>
-              <svg className="w-6 h-6 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
             </div>
           </motion.div>
         </div>
@@ -221,7 +206,7 @@ const Home = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="section-title">Featured Properties</h2>
+            <h2 className="section-title">Featured Properties in India</h2>
             <p className="section-subtitle">
               Explore our hand-picked selection of premium properties
             </p>
@@ -260,10 +245,10 @@ const Home = () => {
             viewport={{ once: true }}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Find Your Dream Property?
+              Ready to Find Your Dream Property in India?
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto text-white/90">
-              Join thousands of satisfied clients who found their perfect home with PropelBoard
+              Join thousands of satisfied clients across India who found their perfect home
             </p>
             <Link
               to="/register"
