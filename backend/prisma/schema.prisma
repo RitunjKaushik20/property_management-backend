@@ -1,0 +1,60 @@
+datasource db {
+  provider = "mongodb"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String   @unique
+  password String
+  role     Role
+  phone    String?
+  properties Property[]
+  buyerLeads Lead[] @relation("BuyerLead")
+  agentLeads Lead[] @relation("AgentLead")
+}
+
+model Property {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  price       Float
+  location    String
+  type        String   @default("For Sale")
+  bedrooms    Int
+  bathrooms   Int
+  area        Float
+  yearBuilt   Int?
+  parking     String?
+  features    String[]
+  images      String[]
+  ownerId     String   @db.ObjectId
+  owner       User     @relation(fields: [ownerId], references: [id])
+  leads       Lead[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+enum Role {
+  buyer
+  owner
+  agent
+  admin
+}
+
+model Lead {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  propertyId String  @db.ObjectId
+  property   Property @relation(fields: [propertyId], references: [id])
+  agentId    String   @db.ObjectId
+  agent      User     @relation("AgentLead", fields: [agentId], references: [id])
+  buyerId    String   @db.ObjectId
+  buyer      User     @relation("BuyerLead", fields: [buyerId], references: [id])
+  message    String?
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+}
