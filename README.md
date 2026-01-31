@@ -4,9 +4,9 @@ A full-stack Property Management System built using the MERN stack, designed to 
 
 🚀 Live Demo
 
-Frontend: https://your-frontend.vercel.app
+Frontend: property-management-backend-six.vercel.app
 
-Backend API: https://your-backend.onrender.com
+Backend API: https://property-management-backend-673l.onrender.com
 
 ⚠️ Replace the URLs with your actual deployed links.
 
@@ -123,14 +123,14 @@ CLOUDINARY_API_SECRET=xxxx
 PORT=8000
 
 Frontend (frontend/.env)
-VITE_API_BASE_URL=https://your-backend.onrender.com
+VITE_API_BASE_URL=https://property-management-backend-673l.onrender.com
 
 
 ⚠️ Do not commit .env files.
 
 🧪 Run Locally
 1️⃣ Clone Repository
-git clone https://github.com/your-username/property-management.git
+git clone https://github.com/Ritunj-Kaushik20/property-management.git
 cd property-management
 
 2️⃣ Backend Setup
