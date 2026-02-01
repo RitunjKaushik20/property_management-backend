@@ -5,13 +5,12 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
-  "https://property-management-frontend.vercel.app",
+  "https://propelboard-real-estate.vercel.app",
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
-
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
@@ -21,8 +20,7 @@ app.use(
       console.error("❌ Blocked by CORS:", origin);
       return callback(new Error("Not allowed by CORS"));
     },
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
@@ -52,5 +50,3 @@ const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
-
-module.exports = app;
