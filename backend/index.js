@@ -4,13 +4,14 @@ const cors = require("cors");
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:5173",
-  "https://propelboard-real-estate.vercel.app",
+  "http://localhost:5173", 
+  "https://property-management-backend-six.vercel.app", 
 ];
 
 app.use(
   cors({
     origin: (origin, callback) => {
+
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
@@ -20,8 +21,9 @@ app.use(
       console.error("❌ Blocked by CORS:", origin);
       return callback(new Error("Not allowed by CORS"));
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, 
   })
 );
 
@@ -38,6 +40,7 @@ app.get("/", (req, res) => {
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
+
 
 app.use((err, req, res, next) => {
   console.error("🔥 Server error:", err.message);
