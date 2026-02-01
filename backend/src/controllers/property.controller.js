@@ -118,15 +118,94 @@ exports.updateProperty = async (req, res) => {
     if (property.ownerId !== req.user.id)
       return res.status(403).json({ message: "Not allowed" });
 
+    const {
+      title,
+      description,
+      price,
+      location,
+      type,
+      bedrooms,
+      bathrooms,
+      area,
+      yearBuilt,
+      parking,
+      features,
+      images,
+      existingImages,
+      imagesToDelete
+    } = req.body;
+
+    let imageUrls = [];
+
+    // Handle existing images that were not deleted
+    if (existingImages) {
+      try {
+        const parsedExisting = JSON.parse(existingImages);
+        if (Array.isArray(parsedExisting)) {
+          imageUrls = parsedExisting;
+        }
+      } catch (e) {
+        console.error('Error parsing existingImages:', e);
+      }
+    }
+
+    // Add new uploaded images
+    if (req.files && req.files.length > 0) {
+      for (const file of req.files) {
+        if (file.buffer) {
+          const result = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+              { folder: "property-management" },
+              (error, result) => {
+                if (error) reject(error);
+                else resolve(result);
+              }
+            );
+            uploadStream.end(file.buffer);
+          });
+          imageUrls.push(result.secure_url);
+        } else if (file.path) {
+          imageUrls.push(file.path);
+        }
+      }
+    }
+
+    // Handle features
+    let featuresArray = [];
+    if (features) {
+      if (typeof features === 'string') {
+        try {
+          featuresArray = JSON.parse(features);
+        } catch (e) {
+          featuresArray = features.split(',').map(f => f.trim()).filter(Boolean);
+        }
+      } else if (Array.isArray(features)) {
+        featuresArray = features;
+      }
+    }
+
     const updated = await prisma.property.update({
       where: { id: req.params.id },
-      data: req.body
+      data: {
+        title: title || property.title,
+        description: description || property.description,
+        price: price ? parseFloat(price) : property.price,
+        location: location || property.location,
+        type: type || property.type,
+        bedrooms: bedrooms ? parseInt(bedrooms) : property.bedrooms,
+        bathrooms: bathrooms ? parseInt(bathrooms) : property.bathrooms,
+        area: area ? parseFloat(area) : property.area,
+        yearBuilt: yearBuilt ? parseInt(yearBuilt) : property.yearBuilt,
+        parking: parking || property.parking,
+        features: featuresArray.length > 0 ? featuresArray : property.features,
+        images: imageUrls.length > 0 ? imageUrls : property.images,
+      }
     });
 
     res.json(updated);
   } catch (error) {
     console.error("UpdateProperty error:", error);
-    res.status(500).json({ message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
 

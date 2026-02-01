@@ -19,7 +19,7 @@ const PropertyDetails = () => {
       setProperty(data);
     } catch (error) {
       console.error('Error fetching property:', error);
-      // Set demo data
+      // Set demo data - use 'id' instead of '_id' for consistency
       setProperty(getDemoProperty(id));
     } finally {
       setLoading(false);
@@ -27,7 +27,7 @@ const PropertyDetails = () => {
   };
 
   const getDemoProperty = (id) => ({
-    _id: id,
+    id: id,
     title: 'Modern Downtown Apartment',
     price: 450000,
     location: '123 Main Street, Manhattan, New York, NY 10001',

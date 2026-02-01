@@ -16,6 +16,7 @@ import Register from './pages/Register';
 
 import Dashboard from './pages/Dashboard';
 import AddProperty from './pages/AddProperty';
+import EditProperty from './pages/EditProperty';
 import MyProperties from './pages/MyProperties';
 import Profile from './pages/Profile';
 
@@ -52,6 +53,14 @@ function App() {
                 element={
                   <PrivateRoute>
                     <AddProperty />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/edit-property/:id"
+                element={
+                  <PrivateRoute>
+                    <EditProperty />
                   </PrivateRoute>
                 }
               />

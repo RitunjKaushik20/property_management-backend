@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import propertyService from '../services/propertyService';
 
 const MyProperties = () => {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchMyProperties();
@@ -14,11 +15,11 @@ const MyProperties = () => {
   const fetchMyProperties = async () => {
     try {
       const data = await propertyService.getMyProperties();
-      // Backend returns array directly, not wrapped in {properties: [...]}
+      // Backend returns array with 'id' field (Prisma default)
       setProperties(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching properties:', error);
-      // Demo data for India
+      // Demo data for India - using 'id' instead of '_id'
       setProperties(getDemoProperties());
     } finally {
       setLoading(false);
@@ -27,7 +28,7 @@ const MyProperties = () => {
 
   const getDemoProperties = () => [
     {
-      _id: '1',
+      id: '1',
       title: '3 BHK Luxury Apartment',
       price: 8500000,
       location: 'Whitefield, Bengaluru',
@@ -41,7 +42,7 @@ const MyProperties = () => {
       inquiries: 18,
     },
     {
-      _id: '2',
+      id: '2',
       title: 'Independent Villa with Garden',
       price: 21500000,
       location: 'Gurgaon Sector 57, Haryana',
@@ -55,7 +56,7 @@ const MyProperties = () => {
       inquiries: 34,
     },
     {
-      _id: '3',
+      id: '3',
       title: '2 BHK Ready-to-Move Flat',
       price: 6200000,
       location: 'Andheri East, Mumbai',
@@ -74,13 +75,17 @@ const MyProperties = () => {
     if (window.confirm('Are you sure you want to delete this property?')) {
       try {
         await propertyService.deleteProperty(id);
-        // Backend returns id as 'id', not '_id'
+        // Remove deleted property from state
         setProperties(properties.filter(p => p.id !== id));
       } catch (error) {
         console.error('Error deleting property:', error);
         alert('Failed to delete property. Please try again.');
       }
     }
+  };
+
+  const handleEdit = (id) => {
+    navigate(`/edit-property/${id}`);
   };
 
   // 🇮🇳 INR formatting
@@ -206,7 +211,10 @@ const MyProperties = () => {
                         >
                           View
                         </Link>
-                        <button className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                        <button
+                          onClick={() => handleEdit(property.id)}
+                          className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+                        >
                           Edit
                         </button>
                         <button

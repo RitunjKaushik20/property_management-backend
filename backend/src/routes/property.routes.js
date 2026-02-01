@@ -7,7 +7,7 @@ router.post("/", auth, upload.array("images"), controller.addProperty);
 router.get("/", controller.getProperties);
 router.get("/my-properties", auth, controller.getMyProperties);
 router.get("/:id", controller.getPropertyById);
-router.put("/:id", auth, controller.updateProperty);
+router.put("/:id", auth, upload.array("images"), controller.updateProperty);
 router.delete("/:id", auth, controller.deleteProperty);
 
 module.exports = router;
