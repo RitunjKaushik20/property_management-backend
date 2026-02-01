@@ -59,25 +59,12 @@ exports.addProperty = async (req, res) => {
 
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
-
-        if (file.buffer) {
-          const result = await new Promise((resolve, reject) => {
-            const uploadStream = cloudinary.uploader.upload_stream(
-              { folder: "property-management" },
-              (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-              }
-            );
-            uploadStream.end(file.buffer);
-          });
-          imageUrls.push(result.secure_url);
-
+        // For multer-storage-cloudinary, the file has a path property with the Cloudinary URL
+        if (file.path) {
           imageUrls.push(file.path);
         }
       }
     }
-
 
     if (images && typeof images === 'string') {
       try {
@@ -86,7 +73,6 @@ exports.addProperty = async (req, res) => {
           imageUrls = [...imageUrls, ...parsedImages];
         }
       } catch (e) {
-
         imageUrls.push(images);
       }
     }
@@ -183,19 +169,7 @@ exports.updateProperty = async (req, res) => {
     // Add new uploaded images
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
-        if (file.buffer) {
-          const result = await new Promise((resolve, reject) => {
-            const uploadStream = cloudinary.uploader.upload_stream(
-              { folder: "property-management" },
-              (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-              }
-            );
-            uploadStream.end(file.buffer);
-          });
-          imageUrls.push(result.secure_url);
-        } else if (file.path) {
+        if (file.path) {
           imageUrls.push(file.path);
         }
       }
@@ -272,12 +246,6 @@ exports.getPropertyById = async (req, res) => {
       return res.status(404).json({ message: "Property not found" });
     }
 
-    // Increment views count
-    await prisma.property.update({
-      where: { id: req.params.id },
-      data: { views: (property.views || 0) + 1 }
-    });
-
     res.json(property);
   } catch (error) {
     console.error("GetPropertyById error:", error);
@@ -298,3 +266,4 @@ exports.getMyProperties = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
