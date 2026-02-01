@@ -6,7 +6,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173",
   "https://property-management-backend-six.vercel.app",
-  "https://property-management-backend-m5hq2tag0-ritunj-kaushiks-projects.vercel.app"
+  "https://property-management-backend-nwwyuygia-ritunj-kaushiks-projects.vercel.app/",
 ];
 
 app.use(cors({
