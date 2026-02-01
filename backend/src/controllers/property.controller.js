@@ -69,6 +69,25 @@ exports.addProperty = async (req, res) => {
         // For multer-storage-cloudinary, the file has a path property with the Cloudinary URL
         if (file.path) {
           imageUrls.push(file.path);
+        } 
+        // For memory storage, we need to upload the buffer to Cloudinary
+        else if (file.buffer) {
+          try {
+            const result = await new Promise((resolve, reject) => {
+              const uploadStream = cloudinary.uploader.upload_stream(
+                { folder: "property-management" },
+                (error, result) => {
+                  if (error) reject(error);
+                  else resolve(result);
+                }
+              );
+              uploadStream.end(file.buffer);
+            });
+            imageUrls.push(result.secure_url);
+          } catch (uploadError) {
+            console.error("Error uploading image to Cloudinary:", uploadError);
+            // Continue without this image rather than failing the whole request
+          }
         }
       }
     }
