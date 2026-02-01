@@ -25,10 +25,16 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.error('Axios Error:', error);
+    console.error('Error Response:', error.response?.data);
     if (error.response?.status === 401) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       window.location.href = "/login";
+    }
+    // Attach full error details to the error object
+    if (error.response?.data) {
+      error.detailedMessage = error.response.data;
     }
     return Promise.reject(error);
   }

@@ -105,7 +105,11 @@ const AddProperty = () => {
         navigate('/my-properties');
       }, 2000);
     } catch (err) {
-      setError(err.message || 'Failed to add property. Please try again.');
+      console.error('Full error:', err);
+      console.error('Error response:', err.response?.data);
+      console.error('Detailed message:', err.detailedMessage);
+      const errorMsg = err.detailedMessage?.message || err.response?.data?.message || err.message || 'Failed to add property. Please try again.';
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }

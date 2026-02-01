@@ -111,7 +111,8 @@ exports.addProperty = async (req, res) => {
     res.json(property);
   } catch (error) {
     console.error("AddProperty error:", error);
-    res.status(500).json({ message: "Internal server error", error: error.message });
+    console.error("Error stack:", error.stack);
+    res.status(500).json({ message: "Internal server error", error: error.message, stack: process.env.NODE_ENV === 'development' ? error.stack : undefined });
   }
 };
 
