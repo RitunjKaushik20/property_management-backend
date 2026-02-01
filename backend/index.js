@@ -3,7 +3,6 @@ const cors = require("cors");
 
 const app = express();
 
-
 const allowedOrigins = [
   "http://localhost:5173",
   "https://property-management-frontend.vercel.app",
@@ -12,6 +11,7 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
+
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
@@ -19,17 +19,15 @@ app.use(
       }
 
       console.error("❌ Blocked by CORS:", origin);
-      callback(new Error("Not allowed by CORS"));
+      return callback(new Error("Not allowed by CORS"));
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-
 app.use(express.json());
-
 
 app.use("/api/auth", require("./src/routes/auth.routes"));
 app.use("/api/properties", require("./src/routes/property.routes"));
@@ -39,11 +37,9 @@ app.get("/", (req, res) => {
   res.send("🚀 Property Management API is running");
 });
 
-
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
-
 
 app.use((err, req, res, next) => {
   console.error("🔥 Server error:", err.message);
