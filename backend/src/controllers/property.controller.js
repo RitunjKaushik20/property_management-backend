@@ -1,6 +1,25 @@
 const { cloudinary } = require("../services/cloudinary");
 const prisma = require("../services/prisma");
 
+// Helper function to sanitize text fields for multipart/form-data
+const sanitizeText = (text) => {
+  if (typeof text !== 'string') return text;
+  
+  // Replace various newline formats with standard \n
+  let sanitized = text
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .replace(/\n{3,}/g, '\n\n'); // Max 2 consecutive newlines
+  
+  // Trim each line
+  sanitized = sanitized
+    .split('\n')
+    .map(line => line.trim())
+    .join('\n');
+  
+  return sanitized.trim();
+};
+
 exports.getProperties = async (req, res) => {
   try {
     const properties = await prisma.property.findMany({
@@ -29,6 +48,12 @@ exports.addProperty = async (req, res) => {
       features,
       images
     } = req.body;
+
+    // Sanitize text fields to handle newlines and special characters
+    const sanitizedDescription = sanitizeText(description);
+    const sanitizedTitle = sanitizeText(title);
+    const sanitizedLocation = sanitizeText(location);
+    const sanitizedParking = sanitizeText(parking);
 
     let imageUrls = [];
 
@@ -81,16 +106,16 @@ exports.addProperty = async (req, res) => {
 
     const property = await prisma.property.create({
       data: {
-        title,
-        description,
+        title: sanitizedTitle || title,
+        description: sanitizedDescription || description,
         price: parseFloat(price),
-        location,
+        location: sanitizedLocation || location,
         type: type || "For Sale",
         bedrooms: parseInt(bedrooms) || 0,
         bathrooms: parseInt(bathrooms) || 0,
         area: parseFloat(area) || 0,
         yearBuilt: yearBuilt ? parseInt(yearBuilt) : null,
-        parking: parking || null,
+        parking: sanitizedParking || parking || null,
         features: featuresArray,
         images: imageUrls,
         ownerId: req.user.id
@@ -134,6 +159,12 @@ exports.updateProperty = async (req, res) => {
       existingImages,
       imagesToDelete
     } = req.body;
+
+    // Sanitize text fields to handle newlines and special characters
+    const sanitizedDescription = sanitizeText(description);
+    const sanitizedTitle = sanitizeText(title);
+    const sanitizedLocation = sanitizeText(location);
+    const sanitizedParking = sanitizeText(parking);
 
     let imageUrls = [];
 
@@ -187,16 +218,16 @@ exports.updateProperty = async (req, res) => {
     const updated = await prisma.property.update({
       where: { id: req.params.id },
       data: {
-        title: title || property.title,
-        description: description || property.description,
+        title: (sanitizedTitle || title) || property.title,
+        description: (sanitizedDescription || description) || property.description,
         price: price ? parseFloat(price) : property.price,
-        location: location || property.location,
+        location: (sanitizedLocation || location) || property.location,
         type: type || property.type,
         bedrooms: bedrooms ? parseInt(bedrooms) : property.bedrooms,
         bathrooms: bathrooms ? parseInt(bathrooms) : property.bathrooms,
         area: area ? parseFloat(area) : property.area,
         yearBuilt: yearBuilt ? parseInt(yearBuilt) : property.yearBuilt,
-        parking: parking || property.parking,
+        parking: (sanitizedParking || parking) || property.parking,
         features: featuresArray.length > 0 ? featuresArray : property.features,
         images: imageUrls.length > 0 ? imageUrls : property.images,
       }
