@@ -1,4 +1,4 @@
-Property Management System (MERN + Prisma)
+Real estate Management System (MERN + Prisma)
 
 A full-stack Property Management System built using the MERN stack, designed to manage properties, users, and leads with secure authentication and a modern UI. The application is fully deployed and production-ready.
 
